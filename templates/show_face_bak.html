@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html style="overflow-y: hidden;width: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/css/login.css" />
+    <link rel="stylesheet" href="/static/css/liMarquee.css" />
+    <script type="text/javascript" src="/static/js/j.js"></script>
+    <script src="/static/js/hls.min.js"></script>
+    <script src="/static/js/jquery-3.1.1.js"></script>
+    <script src="/static/js/jquery.liMarquee.js"></script>
+    <script>
+
+    </script>
+</head>
+<body>
+<div class="top">
+    <div class="top_left">
+        <div class="time_now">
+            <div class="date">{{ date }}</div>
+        </div>
+    </div>
+    <div class="top_right">
+        <div class="close_window"></div>
+    </div>
+</div>
+<div class="content">
+    <div style="float: left;width: 100%;">
+        <div class="side_left">
+            <div class="container container1 h30">
+                <div class="container_cont"  id="div_0" hidden="hidden">
+                    <div class="container_title">人物信息</div>
+                    <div class="person-information">
+                        <img id="img_0" />
+                        <div class="per-inf-content">
+                            <div class="title">编    号：<label id ="id_0"></label></div>
+                            <div class="title">姓    名：<span id ="name_0" style="color: #f5f809;"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container container1 h30">
+                <div class="container_cont"  id="div_1" hidden="hidden">
+                    <div class="container_title">人物信息</div>
+                    <div class="person-information">
+                        <img id="img_1" />
+                        <div class="per-inf-content">
+                            <div class="title">编    号：<label id ="id_1"></label></div>
+                            <div class="title">姓    名：<span id ="name_1" style="color: #f5f809;"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container container1 h30">
+                <div class="container_cont"  id="div_2" hidden="hidden">
+                    <div class="container_title">人物信息</div>
+                    <div class="person-information">
+                        <img id="img_2" />
+                        <div class="per-inf-content">
+                            <div class="title">编    号：<label id ="id_2"></label></div>
+                            <div class="title">姓    名：<span id ="name_2" style="color: #f5f809;"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--face-->
+        <div class="side_right">
+            <div class="container container3 h66">
+                <div class="container_cont">
+                    <div class="face-login">
+                        <video id="myPlayer" muted autoplay width="98%" height="98%">
+                            <source src="http://hls.open.ys7.com/openlive/1bfb0f89a7924ec28d23d637cc0a7267.hd.m3u8" type="application/x-mpegURL" />
+                        </video>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!--face-结束-->
+    <!--图片滚动bengin-->
+    <div class="container container2 container4 h25r gundong">
+        <div class="container_cont">
+            <div class="container_title">各人员信息</div>
+            <div class="model-perinf">
+                <!--<div class="left-jiantou"><img src="/static/image/img1/left-jiantou.png"/></div>-->
+
+                <div class="str4 str_wrap">
+                    <a href="#"><img src="/show_photo/102027.jpg" height="163px" width="142px"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                    <a href="#"><img src="/show_photo/102027.jpg" height="163px" width="142px"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                    <a href="#"><img src="/static/image/img1/person-inf.png"></a>
+                </div>
+
+                <!--<div class="right-jiantou"><img src="/static/image/img1/right-jiantou.png"/></div>-->
+            </div>
+        </div>
+    </div>
+    <!--图片滚动end-->
+</div>
+</body>
+
+</html>
+<script>
+
+    var myPlayer = document.getElementById("myPlayer");
+    var hls = new Hls({defaultAudioCodec: 'mp4a.40.2'}); // 萤石设备默认使用 AAC LC 音频编码
+    var sources = myPlayer.getElementsByTagName('source');
+    hls.loadSource(sources[0].src);
+    hls.attachMedia(myPlayer);
+    //myPlayer.play();
+
+    function log(str){
+        var div = document.createElement('DIV');
+        div.innerHTML = (new Date()).Format('yyyy-MM-dd hh:mm:ss.S') + JSON.stringify(str);
+        document.body.appendChild(div);
+    }
+
+    var video = document.getElementById("myPlayer");
+
+
+    function sendImg () {
+
+        var canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d')
+            .drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        var base64 = canvas.toDataURL('images/png');
+        //log(base64)
+        //output.setAttribute("src",base64);
+
+        $.post("/detect_faces_in_image",{file_code:base64}, function(result){
+            if(result && result.length>0){
+                jQuery("#div_0").hide();
+                jQuery("#div_1").hide();
+                jQuery("#div_2").hide();
+                for(var i=0;i<result.length;i++) {
+                    jQuery("#div_"+i).show();
+                    jQuery("#id_"+i).text(result[i]['id']);
+                    jQuery("#name_"+i).text(result[i]['name']);
+                    jQuery("#img_"+i).attr('src', '/show_photo/' + result[i]['src']);
+                }
+
+            }
+        },'json');
+        window.setTimeout(sendImg, 500);
+
+    }
+
+    /**
+     function captureImage () {
+
+        var canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d')
+            .drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        var base64 = canvas.toDataURL('images/png');
+        //log(base64)
+        output.setAttribute("src",base64);
+
+
+
+    };**/
+
+
+
+    $(document).ready(function() {
+        $(document).ready(function() {
+            var wh = $(window).height();
+            $(".top").css({
+                "height":0.1*wh +"px",
+            });
+            $(".content").css({
+                "height":wh*0.9 + "px",
+            });
+        })
+
+        $('.str4').liMarquee();
+
+        sendImg();
+
+    })
+</script>

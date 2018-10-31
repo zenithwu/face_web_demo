@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<title>添加用户</title>
+<h1>添加用户信息</h1>
+<form method="POST" enctype="multipart/form-data" action="/do_add_face">
+    图片<input type="file" name="file" value="选择图片"><br/>
+    封面<input id="r1" type="radio" value="0"  name="isShow">否</input>
+    <input id="r2" type="radio" value="1" checked="checked" name="isShow">是</input><br/>
+    用户组<select name="groupId" style='width:200px;'><option value='test'>测试环境</option><option value='online'>正式环境</option></select><br/>
+    用户名全拼<input type="text" name="userId"><br/>
+    用户名中文<input type="text" name="userName"><br/>
+    用户职位<input type="text" name="userPosition"><br/>
+    用户电话<input type="text" name="userPhone"><br/>
+    <input type="submit" value="上传">
+</form>

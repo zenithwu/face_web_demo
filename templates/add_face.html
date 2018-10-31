@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<title>添加图片</title>
+<h1>添加用户图片</h1>
+<form method="POST" enctype="multipart/form-data" action="/do_add_face">
+    员工编号<input type="text" name="userId" id="user_id">
+    <input type="button" value="查询" onclick="showImg()"> <br/>
+    图片<input type="file" name="file" value="选择图片">
+    <input type="submit" value="上传">
+</form>
+
+<div id="img"></div>
+
+<script src="/static/js/jquery-3.1.1.js"></script>
+<script type="application/javascript">
+
+    function showImg(){
+        var user_id=$("#user_id").val()
+        con=""
+        $.getJSON("/user_ext_img/"+user_id, function(result){
+            if(result && result.length>0){
+                for(var i=0;i<result.length;i++) {
+                    con=con+"<img width='100px' height='150px' src='"+'show_ext_photo/' + user_id+"/"+result[i]+"'/>"
+                    $("#img").html(con);
+                }
+            }
+        });
+    }
+
+</script>

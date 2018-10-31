@@ -1,0 +1,8 @@
+scikit-learn
+flask
+ConfigParser
+baidu-aip
+opencv-python
+face_recognition_models
+face_recognition
+scipy
